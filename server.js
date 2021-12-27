@@ -13,12 +13,12 @@ const {
     levelEnv
 } = require('./config/index');
 const router = require('./routes/index.js')
+const truckRouter = require('./routes/truck.js')
+const roadRouter = require('./routes/road.js')
+
 const {
     migrateDatabase
 } = require('./helper/migrate.database')
-const {
-    sendOtp
-} = require('./helper/mail')
 
 // Connect Database
 mongoose.connect(mongodbConnectionString, mongodbOptions, error => {
@@ -44,6 +44,9 @@ app.use(morgan(function (tokens, req, res) {
 
 // Register route table
 app.use('/', router);
+app.use('/truck', truckRouter);
+app.use('/road', roadRouter);
+
 
 
 (async () => {

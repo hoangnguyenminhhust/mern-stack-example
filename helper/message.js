@@ -21,5 +21,13 @@ module.exports = {
         USER_OTP_EXITED: "OTP của bạn đã được gửi đi. Nếu không nhận được thông báo vui lòng thử lại sau 5 phút",
         USER_OTP_EXPIRED: "OTP của bạn đã hết hạn hoặc sai",
         USER_UPDATE_PASSWORD_SUCCESS: "Cập nhật mật khẩu thành công"
+    },
+    ROAD_MESS: {
+        ROAD_LIMIT_CREATED: 'Bạn đã đạt giới hạn tối đa tạo đơn hàng',
+        ROAD_NOT_EXIST: 'Không tìm thấy đơn hàng này',
+        ROAD_UPDATE_STATUS: 'Bạn không thể cập nhật trạng thái mới từ trạng thái này'
+    },
+    TRUCK_MESS: {
+        TRUCK_EXISTING: 'LOại xe này đã tồn tại'
     }
 }

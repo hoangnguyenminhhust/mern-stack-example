@@ -27,10 +27,12 @@ const userModel = mongoose.model('datn_user', new mongoose.Schema({
         type: Number,
         enum: [0, 1, 2, 3, 4],
         default: 4
-    }
+    },
+    truck_id: [{
+        truck_id: mongoose.Schema.Types.ObjectId
+    }],
+    address: String
 }))
-
-
 
 module.exports = {
     userModel,
