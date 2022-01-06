@@ -2,7 +2,9 @@ const express = require('express');
 const {
     createBOL,
     listBOL,
-    updateStatusRoad
+    updateStatusRoad,
+    updateInfo,
+    getBOL
 } = require('../controllers/road');
 const {
     authenGuard
@@ -23,10 +25,17 @@ router.get('/', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN','DRIVER'])
 }, listBOL)
 
+router.get('/:road_id', authenGuard, (req, res, next) => {
+    authorGuard(req, res, next, ['ADMIN','DRIVER'])
+}, getBOL)
 
-router.put('/:road_id', authenGuard, (req, res, next) => {
+
+router.put('/:road_id/status', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN','DRIVER'])
 }, updateStatusRoad)
 
+router.put('/:road_id', authenGuard, (req, res, next) => {
+    authorGuard(req, res, next, ['ADMIN','DRIVER'])
+}, updateInfo)
 
 module.exports = router

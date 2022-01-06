@@ -16,7 +16,9 @@ const roadModel = mongoose.model('datn_road', new mongoose.Schema({
     status: {
         type: String,
         enum: [ 'WAIT', 'RUNNING', 'SUCCESS', 'FAILED']
-    }
+    },
+    customer: String,
+    description:  String
 }, {
     timestamps: true
 }))
