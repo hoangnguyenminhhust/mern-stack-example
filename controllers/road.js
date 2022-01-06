@@ -32,7 +32,7 @@ module.exports = {
                 target_to,
                 driver_id: user._id,
                 status: 'WAIT',
-                bill_price , 
+                bill_price,
                 payable_price,
             })
             return success(res, newRoad)
@@ -74,20 +74,31 @@ module.exports = {
         } = req.body
         const user = req.user
         try {
-        
+            let updateData = {
+                status: generateNextStatus(existingRoad.status, confirm)
+            }
             const existingRoad = await roadModel.findOne({
                 _id: road_id,
                 driver_id: user._id
             })
-            if(existingRoad.status !== 'RUNNING'){
+            if (existingRoad.status !== 'RUNNING') {
                 const checkCurrentLoad = await roadModel.find({
-                    _id: { $ne: road_id } ,
+                    _id: {
+                        $ne: road_id
+                    },
                     driver_id: user._id,
                     status: 'RUNNING'
                 })
                 if (checkCurrentLoad.length > 0) {
                     return failed(res, ROAD_MESS.ROAD_LIMIT_CREATED)
                 }
+            }
+            if (existingRoad.status === 'WAIT' && confirm === true) {
+                updateData.start_time = new Date()
+                updateData.report_time = new Date()
+            }
+            if (existingRoad.status === 'RUNNING' && confirm === true) {
+                updateData.end_time = new Date()
             }
             if (['SUCCESS', 'FAILED'].includes(existingRoad.status)) {
                 return failed(res, ROAD_MESS.ROAD_UPDATE_STATUS)
@@ -97,9 +108,7 @@ module.exports = {
             }
             const newRoad = await roadModel.findOneAndUpdate({
                 _id: road_id,
-            }, {
-                status: generateNextStatus(existingRoad.status, confirm)
-            }, {
+            }, updateData, {
                 new: true
             })
             return success(res, newRoad)
