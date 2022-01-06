@@ -19,10 +19,9 @@ module.exports = {
             payable_price
         } = req.body
         const user = req.user
-        const customer = req.user
         try {
             const checkCurrentLoad = await roadModel.find({
-                customer_id: customer._id,
+                driver_id: user._id,
                 status: 'RUNNING'
             })
             if (checkCurrentLoad.length > 0) {
@@ -31,7 +30,6 @@ module.exports = {
             const newRoad = await roadModel.create({
                 target_from,
                 target_to,
-                customer_id: customer._id,
                 driver_id: user._id,
                 status: 'WAIT',
                 bill_price , 
@@ -42,6 +40,7 @@ module.exports = {
             return catchExp(res, COMMON_MESS.ERROR)
         }
     },
+
     listBOL: async (req, res) => {
         const {
             type = 'ALL',
@@ -75,10 +74,21 @@ module.exports = {
         } = req.body
         const user = req.user
         try {
+        
             const existingRoad = await roadModel.findOne({
                 _id: road_id,
                 driver_id: user._id
             })
+            if(existingRoad.status !== 'RUNNING'){
+                const checkCurrentLoad = await roadModel.find({
+                    _id: { $ne: road_id } ,
+                    driver_id: user._id,
+                    status: 'RUNNING'
+                })
+                if (checkCurrentLoad.length > 0) {
+                    return failed(res, ROAD_MESS.ROAD_LIMIT_CREATED)
+                }
+            }
             if (['SUCCESS', 'FAILED'].includes(existingRoad.status)) {
                 return failed(res, ROAD_MESS.ROAD_UPDATE_STATUS)
             }

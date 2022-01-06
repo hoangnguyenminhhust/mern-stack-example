@@ -11,7 +11,6 @@ const roadModel = mongoose.model('datn_road', new mongoose.Schema({
     report_time: Date, 
     bill_price: String, 
     payable_price: String,
-    customer_id: mongoose.Schema.Types.ObjectId,
     driver_id: mongoose.Schema.Types.ObjectId,
     status: {
         type: String,
