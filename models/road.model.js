@@ -7,11 +7,15 @@ const roadModel = mongoose.model('datn_road', new mongoose.Schema({
     target_to: {
         type: String
     },
+    start_time: Date, 
+    report_time: Date, 
+    bill_price: String, 
+    payable_price: String,
     customer_id: mongoose.Schema.Types.ObjectId,
     driver_id: mongoose.Schema.Types.ObjectId,
     status: {
         type: String,
-        enum: ['CREATED', 'WAIT', 'APPROVED','REJECTD' ,'RUNNING', 'SUCCESS', 'FAILED']
+        enum: [ 'WAIT', 'RUNNING', 'SUCCESS', 'FAILED']
     }
 }, {
     timestamps: true

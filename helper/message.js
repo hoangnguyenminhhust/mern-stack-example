@@ -23,7 +23,7 @@ module.exports = {
         USER_UPDATE_PASSWORD_SUCCESS: "Cập nhật mật khẩu thành công"
     },
     ROAD_MESS: {
-        ROAD_LIMIT_CREATED: 'Bạn đã đạt giới hạn tối đa tạo đơn hàng',
+        ROAD_LIMIT_CREATED: 'Bạn còn 1 đơn còn hoạt động . Vui lòng hoàn thành trước',
         ROAD_NOT_EXIST: 'Không tìm thấy đơn hàng này',
         ROAD_UPDATE_STATUS: 'Bạn không thể cập nhật trạng thái mới từ trạng thái này'
     },

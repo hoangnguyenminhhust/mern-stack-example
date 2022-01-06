@@ -15,22 +15,27 @@ module.exports = {
         const {
             target_from,
             target_to,
+            bill_price,
+            payable_price
         } = req.body
+        const user = req.user
         const customer = req.user
         try {
             const checkCurrentLoad = await roadModel.find({
                 customer_id: customer._id,
-                status: 'CREATED'
+                status: 'RUNNING'
             })
-            if (checkCurrentLoad.length > 5) {
+            if (checkCurrentLoad.length > 0) {
                 return failed(res, ROAD_MESS.ROAD_LIMIT_CREATED)
             }
             const newRoad = await roadModel.create({
                 target_from,
                 target_to,
                 customer_id: customer._id,
-                driver_id: null,
-                status: 'CREATED'
+                driver_id: user._id,
+                status: 'WAIT',
+                bill_price , 
+                payable_price,
             })
             return success(res, newRoad)
         } catch (error) {
@@ -41,10 +46,10 @@ module.exports = {
         const {
             type = 'ALL',
         } = req.query
-        const customer = req.user
+        const user = req.user
         try {
             let filter = {
-                customer_id: customer._id,
+                driver_id: user._id,
             }
             if (type !== 'ALL') {
                 filter = Object.assign(filter, {
@@ -68,13 +73,13 @@ module.exports = {
         const {
             confirm = true
         } = req.body
-        const driver = req.user
+        const user = req.user
         try {
             const existingRoad = await roadModel.findOne({
                 _id: road_id,
-                driver_id: driver._id
+                driver_id: user._id
             })
-            if (['CREATED', 'REJECTD', 'SUCCESS', 'FAILED'].includes(existingRoad.status)) {
+            if (['SUCCESS', 'FAILED'].includes(existingRoad.status)) {
                 return failed(res, ROAD_MESS.ROAD_UPDATE_STATUS)
             }
             if (!existingRoad) {
@@ -98,12 +103,6 @@ const generateNextStatus = (current, check) => {
     let newStatus = ''
     switch (current) {
         case 'WAIT':
-            if (check) {
-                newStatus = 'APPROVED'
-            } else
-                newStatus = 'REJECTD'
-            break;
-        case 'APPROVED':
             if (check) {
                 newStatus = 'RUNNING'
             } else
