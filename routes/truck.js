@@ -13,11 +13,11 @@ const {
 const router = express.Router();
 
 router.post('/', authenGuard, (req, res, next) => {
-    authorGuard(req, res, next, ['ADMIN', 'NOT_APPROVE'])
+    authorGuard(req, res, next, ['ADMIN','DRIVER'])
 }, createTruck)
 
 router.get('/', authenGuard, (req, res, next) => {
-    authorGuard(req, res, next, ['ADMIN', 'NOT_APPROVE'])
+    authorGuard(req, res, next, ['ADMIN','DRIVER'])
 }, listTruck)
 
 

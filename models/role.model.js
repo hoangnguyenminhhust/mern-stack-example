@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const roleModel = mongoose.model('datn_role', new mongoose.Schema({
     role_type: {
         type: String,
-        enum: ['ADMIN', 'MANAGER', 'CUSTOMER', 'DRIVER', 'NOT_APPROVE'],
+        enum: ['ADMIN','DRIVER'],
         unique: true
     },
     role_code: {
