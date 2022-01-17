@@ -2,6 +2,9 @@ const {
     roadModel
 } = require('../models/road.model')
 const {
+    imageModel
+} = require('../models/image.model')
+const {
     failed,
     success,
     catchExp
@@ -32,7 +35,7 @@ module.exports = {
                 target_to,
                 driver_id: user._id,
                 status: 'WAIT',
-                bill_price , 
+                bill_price,
                 payable_price,
             })
             return success(res, newRoad)
@@ -74,14 +77,16 @@ module.exports = {
         } = req.body
         const user = req.user
         try {
-        
+
             const existingRoad = await roadModel.findOne({
                 _id: road_id,
                 driver_id: user._id
             })
-            if(existingRoad.status !== 'RUNNING'){
+            if (existingRoad.status !== 'RUNNING') {
                 const checkCurrentLoad = await roadModel.find({
-                    _id: { $ne: road_id } ,
+                    _id: {
+                        $ne: road_id
+                    },
                     driver_id: user._id,
                     status: 'RUNNING'
                 })
@@ -103,6 +108,34 @@ module.exports = {
                 new: true
             })
             return success(res, newRoad)
+        } catch (error) {
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    },
+
+    uploadSignatral: async function (req, res, next) {
+        const {
+            _id: user_id
+        } = req.user
+        const {
+            originalname,
+            encoding,
+            mimetype,
+            destination,
+            filename,
+            path
+        } = req.file
+        try {
+            const newImage = await imageModel.create({
+                image_name: originalname,
+                encoding,
+                mimetype,
+                destination,
+                filename,
+                path,
+                user_id
+            })
+            return success(res, newImage)
         } catch (error) {
             return catchExp(res, COMMON_MESS.ERROR)
         }

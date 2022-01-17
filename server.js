@@ -15,6 +15,9 @@ const {
 const router = require('./routes/index.js')
 const truckRouter = require('./routes/truck.js')
 const roadRouter = require('./routes/road.js')
+const userRouter = require('./routes/user.js')
+
+var path = require('path');
 
 const {
     migrateDatabase
@@ -29,8 +32,12 @@ mongoose.connect(mongodbConnectionString, mongodbOptions, error => {
     }
 });
 
+
 // Setup server options
 const app = express()
+var dir = path.join(__dirname, 'public');
+app.use(express.static(dir));
+
 app.use(express.json());
 app.use(morgan(function (tokens, req, res) {
     return [
@@ -46,6 +53,8 @@ app.use(morgan(function (tokens, req, res) {
 app.use('/', router);
 app.use('/truck', truckRouter);
 app.use('/road', roadRouter);
+app.use('/user', userRouter);
+
 
 
 

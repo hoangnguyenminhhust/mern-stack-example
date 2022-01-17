@@ -31,7 +31,12 @@ const userModel = mongoose.model('datn_user', new mongoose.Schema({
     truck_id: [{
         truck_id: mongoose.Schema.Types.ObjectId
     }],
-    address: String
+
+    address: String,
+
+    des_lat: String,
+
+    des_long: String
 }))
 
 module.exports = {

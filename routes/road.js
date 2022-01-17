@@ -1,8 +1,13 @@
 const express = require('express');
+const multer = require('multer')
+const upload = multer({
+    dest: 'public/image/'
+})
 const {
     createBOL,
     listBOL,
-    updateStatusRoad
+    updateStatusRoad,
+    uploadSignatral
 } = require('../controllers/road');
 const {
     authenGuard
@@ -27,6 +32,8 @@ router.get('/', authenGuard, (req, res, next) => {
 router.put('/:road_id', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['DRIVER'])
 }, updateStatusRoad)
+
+router.post('/upload/signal', authenGuard, upload.single('avatar'), uploadSignatral)
 
 
 module.exports = router
