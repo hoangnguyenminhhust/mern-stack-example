@@ -9,6 +9,9 @@ const imageModel = mongoose.model('datn_image', new mongoose.Schema({
     path: String,
     user_id: {
         type: String,
+    },
+    road_id: {
+        type: String,
     }
 }, {
     timestamps: true

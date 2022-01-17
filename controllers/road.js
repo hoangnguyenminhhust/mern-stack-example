@@ -164,6 +164,9 @@ module.exports = {
             filename,
             path
         } = req.file
+        const {
+            road_id
+        } = req.params
         try {
             const newImage = await imageModel.create({
                 image_name: originalname,
@@ -172,14 +175,20 @@ module.exports = {
                 destination,
                 filename,
                 path,
-                user_id
+                user_id,
+                road_id
+            })
+            await roadModel.findOneAndUpdate({
+                _id: road_id
+            }, {
+                is_sign: true
             })
             return success(res, newImage)
         } catch (error) {
             return catchExp(res, COMMON_MESS.ERROR)
         }
     },
-    
+
     updateInfo: async (req, res) => {
         const {
             target_from,
@@ -225,8 +234,34 @@ module.exports = {
         } catch (error) {
             return catchExp(res, COMMON_MESS.ERROR)
         }
-    }
+    },
+    adminListBOL: async (req, res) => {
+        try {
 
+            const countUsers = await userModel.countDocuments({
+                role_code: 4
+            })
+            const countOrderDeliveried = await roadModel.countDocuments({
+                status: "SUCCESS"
+            })
+            const countOrderDelivering = await roadModel.countDocuments({
+                status: "RUNNING"
+            })
+            const countOrderPending = await roadModel.countDocuments({
+                status: "CREATED"
+            })
+
+            return success(res, {
+                user: countUsers,
+                deliveried: countOrderDeliveried,
+                delivering: countOrderDelivering,
+                pending: countOrderPending
+            })
+
+        } catch (error) {
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    }
 }
 
 const generateNextStatus = (current, check) => {

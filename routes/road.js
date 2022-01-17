@@ -9,7 +9,8 @@ const {
     updateStatusRoad,
     uploadSignatral,
     updateInfo,
-    getBOL
+    getBOL,
+    adminListBOL
 } = require('../controllers/road');
 const {
     authenGuard
@@ -39,10 +40,14 @@ router.put('/:road_id/status', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN','DRIVER'])
 }, updateStatusRoad)
 
-router.post('/upload/signal', authenGuard, upload.single('avatar'), uploadSignatral)
+router.post('/:road_id/upload/signal', authenGuard, upload.single('avatar'), uploadSignatral)
 
 router.put('/:road_id', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN','DRIVER'])
 }, updateInfo)
+
+router.get('/admin', authenGuard, (req, res, next) => {
+    authorGuard(req, res, next, ['ADMIN'])
+}, adminListBOL)
 
 module.exports = router
