@@ -8,6 +8,7 @@ const roadModel = mongoose.model('datn_road', new mongoose.Schema({
         type: String
     },
     start_time: Date, 
+    user_id: mongoose.Schema.Types.ObjectId,
     report_time: Date, 
     end_time: Date,
     bill_price: String, 
