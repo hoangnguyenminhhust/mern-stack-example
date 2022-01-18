@@ -20,6 +20,8 @@ const roadModel = mongoose.model('datn_road', new mongoose.Schema({
     customer: String,
     description:  String,
     is_sign: Boolean,
+    latitude: String,
+    longitude : String,
 }, {
     timestamps: true
 }))

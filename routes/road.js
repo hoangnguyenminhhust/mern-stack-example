@@ -10,6 +10,7 @@ const {
     uploadSignatral,
     updateInfo,
     getBOL,
+    adminOverView,
     adminListBOL
 } = require('../controllers/road');
 const {
@@ -46,7 +47,13 @@ router.put('/:road_id', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN','DRIVER'])
 }, updateInfo)
 
-router.get('/admin', authenGuard, (req, res, next) => {
+// ADmin routes
+
+router.get('/admin/overview', authenGuard, (req, res, next) => {
+    authorGuard(req, res, next, ['ADMIN'])
+}, adminOverView)
+
+router.get('/admin/bol', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN'])
 }, adminListBOL)
 
