@@ -71,7 +71,7 @@ module.exports = {
             const newRoad = await roadModel.create({
                 target_from,
                 target_to,
-                driver_id: null ,
+                driver_id: null,
                 status: 'WAIT',
                 bill_price,
                 user_id: user._id,
@@ -86,7 +86,6 @@ module.exports = {
             return catchExp(res, COMMON_MESS.ERROR)
         }
     },
-
 
     getBOL: async (req, res) => {
         const {
@@ -124,7 +123,34 @@ module.exports = {
                     status: type
                 })
             }
-            const listRoad = await roadModel.find(filter)
+            const listRoad = await roadModel.find(filter).populate('driver').populate('user')
+            const totalRoad = await roadModel.countDocuments(filter)
+            return success(res, {
+                total: totalRoad,
+                data: listRoad
+            })
+        } catch (error) {
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    },
+
+    adminListBOL: async (req, res) => {
+        const {
+            limit = '10', page = '1'
+        } = req.query
+        const offset = (parseInt(page) - 1) * parseInt(limit)
+        const {
+            type = 'ALL',
+        } = req.query
+        const user = req.user
+        try {
+            let filter = {}
+            if (type !== 'ALL') {
+                filter = Object.assign(filter, {
+                    status: type
+                })
+            }
+            const listRoad = await roadModel.find(filter).populate('driver').populate('user').limit(parseInt(limit)).skip(offset)
             const totalRoad = await roadModel.countDocuments(filter)
             return success(res, {
                 total: totalRoad,
@@ -233,7 +259,6 @@ module.exports = {
             target_to,
             bill_price,
             payable_price,
-            customer,
             description
         } = req.body
         const {
@@ -302,33 +327,6 @@ module.exports = {
         }
     },
 
-    adminListBOL: async (req, res) => {
-        const {
-            limit = '10', page = '1'
-        } = req.query
-        const offset = (parseInt(page) - 1) * parseInt(limit)
-        try {
-            const countOrder = await roadModel.countDocuments({
-                status: {
-                    $in: ["WAIT"]
-                }
-            })
-            const listOderder = await roadModel.find({
-                status: {
-                    $in: ["WAIT"]
-                }
-            }).limit(parseInt(limit)).skip(offset)
-
-            return success(res, {
-                total: countOrder,
-                orders: listOderder,
-            })
-
-        } catch (error) {
-            console.log(error)
-            return catchExp(res, COMMON_MESS.ERROR)
-        }
-    }
 }
 
 const generateNextStatus = (current, check) => {

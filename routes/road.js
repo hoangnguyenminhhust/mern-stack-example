@@ -12,7 +12,7 @@ const {
     getBOL,
     adminOverView,
     adminListBOL,
-    adminCreateBOL
+    adminCreateBOL,
 } = require('../controllers/road');
 const {
     authenGuard
@@ -34,22 +34,28 @@ router.post('/admin', authenGuard, (req, res, next) => {
 
 
 router.get('/', authenGuard, (req, res, next) => {
-    authorGuard(req, res, next, ['ADMIN','DRIVER'])
+    authorGuard(req, res, next, ['ADMIN', 'DRIVER'])
 }, listBOL)
 
+
+router.get('/admin', authenGuard, (req, res, next) => {
+    authorGuard(req, res, next, ['ADMIN'])
+}, adminListBOL)
+
+
 router.get('/:road_id', authenGuard, (req, res, next) => {
-    authorGuard(req, res, next, ['ADMIN','DRIVER'])
+    authorGuard(req, res, next, ['ADMIN', 'DRIVER'])
 }, getBOL)
 
 
 router.put('/:road_id/status', authenGuard, (req, res, next) => {
-    authorGuard(req, res, next, ['ADMIN','DRIVER'])
+    authorGuard(req, res, next, ['ADMIN', 'DRIVER'])
 }, updateStatusRoad)
 
 router.post('/:road_id/upload/signal', authenGuard, upload.single('avatar'), uploadSignatral)
 
 router.put('/:road_id', authenGuard, (req, res, next) => {
-    authorGuard(req, res, next, ['ADMIN','DRIVER'])
+    authorGuard(req, res, next, ['ADMIN', 'DRIVER'])
 }, updateInfo)
 
 // ADmin routes
