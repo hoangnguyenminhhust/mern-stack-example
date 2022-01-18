@@ -56,4 +56,5 @@ router.get('/admin/overview', authenGuard, (req, res, next) => {
 router.get('/admin/bol', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN'])
 }, adminListBOL)
+
 module.exports = router

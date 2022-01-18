@@ -24,7 +24,9 @@ module.exports = {
             bill_price,
             payable_price,
             customer,
-            description
+            description,
+            latitude,
+            longitude,
         } = req.body
         const user = req.user
         try {
@@ -43,7 +45,9 @@ module.exports = {
                 bill_price,
                 payable_price,
                 customer,
-                description
+                description,
+                latitude,
+                longitude,
             })
             return success(res, newRoad)
         } catch (error) {
