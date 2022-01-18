@@ -4,7 +4,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
-
+var cors = require('cors')
 // Module require
 const {
     mongodbConnectionString,
@@ -35,6 +35,7 @@ mongoose.connect(mongodbConnectionString, mongodbOptions, error => {
 
 // Setup server options
 const app = express()
+app.use(cors())
 var dir = path.join(__dirname, 'public');
 app.use(express.static(dir));
 
