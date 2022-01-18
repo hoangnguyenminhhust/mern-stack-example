@@ -11,7 +11,8 @@ const {
     updateInfo,
     getBOL,
     adminOverView,
-    adminListBOL
+    adminListBOL,
+    adminCreateBOL
 } = require('../controllers/road');
 const {
     authenGuard
@@ -24,8 +25,12 @@ const {
 const router = express.Router();
 
 router.post('/', authenGuard, (req, res, next) => {
-    authorGuard(req, res, next, ['ADMIN','DRIVER'])
+    authorGuard(req, res, next, ['DRIVER'])
 }, createBOL)
+
+router.post('/admin', authenGuard, (req, res, next) => {
+    authorGuard(req, res, next, ['ADMIN'])
+}, adminCreateBOL)
 
 
 router.get('/', authenGuard, (req, res, next) => {

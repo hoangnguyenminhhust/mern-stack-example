@@ -4,30 +4,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
-const AxiosInstance = require('axios')
-const {
-    Client
-} = require("@googlemaps/google-maps-services-js");
-
-const client = new Client({});
-
-client
-    .elevation({
-        params: {
-            locations: [{
-                lat: 21.02035095946479,
-                lng: 105.80313812883593
-            }],
-            key: process.env.GOOGLE_MAPS_API_KEY
-        },
-        timeout: 1000 // milliseconds
-    }, AxiosInstance)
-    .then(r => {
-        console.log("reso",r.data.results[0].elevation);
-    })
-    .catch(e => {
-        console.log(e);
-    });
 
 // Module require
 const {

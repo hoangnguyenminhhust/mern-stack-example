@@ -55,6 +55,39 @@ module.exports = {
         }
     },
 
+    adminCreateBOL: async (req, res) => {
+        const {
+            target_from,
+            target_to,
+            bill_price,
+            payable_price,
+            customer,
+            description,
+            latitude,
+            longitude,
+        } = req.body
+        const user = req.user
+        try {
+            const newRoad = await roadModel.create({
+                target_from,
+                target_to,
+                driver_id: null ,
+                status: 'WAIT',
+                bill_price,
+                user_id: user._id,
+                payable_price,
+                customer,
+                description,
+                latitude,
+                longitude,
+            })
+            return success(res, newRoad)
+        } catch (error) {
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    },
+
+
     getBOL: async (req, res) => {
         const {
             road_id,
