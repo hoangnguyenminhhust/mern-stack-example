@@ -128,6 +128,7 @@ module.exports = {
             let updateData = {
                 status: generateNextStatus(existingRoad.status, confirm)
             }
+            console.log(updateData)
             if (existingRoad.status === 'WAIT' && confirm === true) {
                 updateData.start_time = new Date()
                 updateData.report_time = new Date()
@@ -235,7 +236,8 @@ module.exports = {
             return catchExp(res, COMMON_MESS.ERROR)
         }
     },
-    adminListBOL: async (req, res) => {
+
+    adminOverView: async (req, res) => {
         try {
 
             const countUsers = await userModel.countDocuments({
@@ -261,10 +263,39 @@ module.exports = {
         } catch (error) {
             return catchExp(res, COMMON_MESS.ERROR)
         }
+    },
+
+    adminListBOL: async (req, res) => {
+        const {
+            limit = '10', page = '1'
+        } = req.query
+        const offset = (parseInt(page) - 1) * parseInt(limit)
+        try {
+            const countOrder = await roadModel.countDocuments({
+                status: {
+                    $in: ["WAIT"]
+                }
+            })
+            const listOderder = await roadModel.find({
+                status: {
+                    $in: ["WAIT"]
+                }
+            }).limit(parseInt(limit)).skip(offset)
+
+            return success(res, {
+                total: countOrder,
+                orders: listOderder,
+            })
+
+        } catch (error) {
+            console.log(error)
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
     }
 }
 
 const generateNextStatus = (current, check) => {
+    console.log(current, check)
     let newStatus = ''
     switch (current) {
         case 'WAIT':

@@ -100,4 +100,21 @@ module.exports = {
             return catchExp(res, COMMON_MESS.ERROR)
         }
     },
+
+    adminListUser: async (req, res) => {
+        const {
+            limit = '10', page = '1'
+        } = req.query
+        const offset = (parseInt(page) - 1) * parseInt(limit)
+        try {
+            const users = await userModel.find().limit(parseInt(limit)).skip(offset)
+            const total = await userModel.countDocuments()
+            return success(res, {
+                total,
+                users
+            })
+        } catch (error) {
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    }
 }
