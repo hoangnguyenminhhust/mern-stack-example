@@ -65,13 +65,14 @@ module.exports = {
             description,
             latitude,
             longitude,
+            driver_id = null,
         } = req.body
         const user = req.user
         try {
             const newRoad = await roadModel.create({
                 target_from,
                 target_to,
-                driver_id: null,
+                driver_id,
                 status: 'WAIT',
                 bill_price,
                 user_id: user._id,
