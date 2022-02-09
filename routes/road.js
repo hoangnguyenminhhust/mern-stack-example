@@ -13,6 +13,7 @@ const {
     adminOverView,
     adminListBOL,
     adminCreateBOL,
+    adminUpdateInfo
 } = require('../controllers/road');
 const {
     authenGuard
@@ -67,5 +68,10 @@ router.get('/admin/overview', authenGuard, (req, res, next) => {
 router.get('/admin/bol', authenGuard, (req, res, next) => {
     authorGuard(req, res, next, ['ADMIN'])
 }, adminListBOL)
+
+router.put('/admin/:road_id/assign', authenGuard, (req, res, next) => {
+    authorGuard(req, res, next, ['ADMIN'])
+}, adminUpdateInfo)
+
 
 module.exports = router

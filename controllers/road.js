@@ -301,6 +301,33 @@ module.exports = {
         }
     },
 
+    adminUpdateInfo: async (req, res) => {
+        const {
+            driver_id
+        } = req.body
+        const {
+            road_id
+        } = req.params
+        try {
+            const existingRoad = await roadModel.findOne({
+                _id: road_id,
+            })
+            if (!existingRoad) {
+                return failed(res, ROAD_MESS.ROAD_NOT_EXIST)
+            }
+            await roadModel.findOneAndUpdate({
+                _id: road_id
+            }, {
+                driver_id
+            })
+            return success(res, "Thành công")
+
+        } catch (error) {
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    },
+
+
     adminOverView: async (req, res) => {
         try {
 
@@ -335,6 +362,12 @@ const generateNextStatus = (current, check) => {
     console.log(current, check)
     let newStatus = ''
     switch (current) {
+        case 'ACCEPT':
+            if (check) {
+                newStatus = 'WAIT'
+            } else
+                newStatus = 'ACCEPT'
+            break;
         case 'WAIT':
             if (check) {
                 newStatus = 'RUNNING'
