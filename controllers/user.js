@@ -9,6 +9,9 @@ const {
     otpModel
 } = require('../models/otp.model')
 const {
+    roadModel
+} = require('../models/road.model')
+const {
     failed,
     success,
     catchExp
@@ -28,7 +31,51 @@ const {
 const {
     sendOtp
 } = require('../helper/mail')
+const axios = require('axios')
 module.exports = {
+
+    getOrderNear: async (req, res) => {
+        const {
+            _id: user_id
+        } = req.user
+        try {
+            const dataUser = await userModel.findOne({
+                _id: user_id
+            })
+            const orderList = await roadModel.find({
+                status: 'WAIT'
+            })
+            let result = []
+            for (let i = 0; i < orderList.length; i++) {
+                let url = `http://103.141.144.200:7117/route/v1/driving/${dataUser.des_long},${dataUser.des_lat};${orderList[i].longitude},${orderList[i].latitude}?steps=false&exclude=motorway`
+                console.log('driving.url', url)
+                const response = await axios.get(url)
+                if (response.data.routes[0].distance < 5000)
+                    result.push(orderList[i])
+
+            }
+            return success(res, result)
+        } catch (error) {
+            console.log(error)
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    },
+
+    userGetProfile: async (req, res) => {
+        const {
+            _id: user_id
+        } = req.user
+        try {
+            const dataUser = await userModel.findOne({
+                _id: user_id
+            })
+            return success(res, dataUser)
+        } catch (error) {
+            return catchExp(res, COMMON_MESS.ERROR)
+        }
+    },
+
+
     updateSelfInfo: async (req, res) => {
         const {
             _id: user_id

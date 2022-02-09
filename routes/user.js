@@ -3,7 +3,9 @@ const {
     updateSelfInfo,
     changePass,
     updateLocation,
-    adminListUser
+    adminListUser,
+    userGetProfile,
+    getOrderNear
 } = require('../controllers/user');
 const {
     authenGuard
@@ -21,6 +23,9 @@ router.put('/change-pass' , authenGuard, changePass)
 
 router.put('/update-location' , authenGuard, updateLocation)
 
+router.get('/self-info' , authenGuard, userGetProfile)
+
+router.get('/get-order-near' , authenGuard, getOrderNear)
 // Admin routes
 
 router.get('/admin', authenGuard,(req, res, next) => {

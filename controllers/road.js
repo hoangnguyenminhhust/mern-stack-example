@@ -84,6 +84,7 @@ module.exports = {
             })
             return success(res, newRoad)
         } catch (error) {
+            console.log(error)
             return catchExp(res, COMMON_MESS.ERROR)
         }
     },
