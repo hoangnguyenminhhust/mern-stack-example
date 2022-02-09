@@ -73,7 +73,7 @@ module.exports = {
                 target_from,
                 target_to,
                 driver_id,
-                status: 'WAIT',
+                status: 'ACCEPT',
                 bill_price,
                 user_id: user._id,
                 payable_price,

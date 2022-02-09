@@ -36,14 +36,14 @@ module.exports = {
 
     getOrderNear: async (req, res) => {
         const {
-            _id: user_id
-        } = req.user
+         user_id
+        } = req.params
         try {
             const dataUser = await userModel.findOne({
                 _id: user_id
             })
             const orderList = await roadModel.find({
-                status: 'WAIT'
+                status: 'ACCEPT'
             })
             let result = []
             for (let i = 0; i < orderList.length; i++) {

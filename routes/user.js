@@ -25,7 +25,7 @@ router.put('/update-location' , authenGuard, updateLocation)
 
 router.get('/self-info' , authenGuard, userGetProfile)
 
-router.get('/get-order-near' , authenGuard, getOrderNear)
+router.get('/:user_id/get-order-near' , authenGuard, getOrderNear)
 // Admin routes
 
 router.get('/admin', authenGuard,(req, res, next) => {

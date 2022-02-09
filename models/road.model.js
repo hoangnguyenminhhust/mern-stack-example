@@ -16,7 +16,7 @@ const roadSchema = new mongoose.Schema({
     driver_id: mongoose.Schema.Types.ObjectId,
     status: {
         type: String,
-        enum: ['WAIT', 'RUNNING', 'SUCCESS', 'FAILED']
+        enum: ['WAIT','ACCEPT', 'RUNNING', 'SUCCESS', 'FAILED']
     },
     customer: String,
     description: String,
